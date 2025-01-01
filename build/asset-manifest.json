@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.698a38c2.css",
+    "main.js": "/static/js/main.52c04c0a.js",
+    "static/media/refined_image1.jpg": "/static/media/refined_image1.d9f67c2941a03aef7e1e.jpg",
+    "static/media/refined_image3.jpg": "/static/media/refined_image3.058bdbb8296c79700fa7.jpg",
+    "static/media/entre_cotes.webp": "/static/media/entre_cotes.f8cc75b29b1b85be39b9.webp",
+    "static/media/cordons_bleu.webp": "/static/media/cordons_bleu.1340d3187db5f54820a2.webp",
+    "static/media/couscous.webp": "/static/media/couscous.7a653f9da6897d41d3b6.webp",
+    "static/media/footer_background.webp": "/static/media/footer_background.556d2125b4d3f0fa14c3.webp",
+    "static/media/roti.webp": "/static/media/roti.832aaf0c2e5ccea9e5e5.webp",
+    "static/media/croquettes_de_chou_fleur.webp": "/static/media/croquettes_de_chou_fleur.2783d9a7d02c6c4eb942.webp",
+    "static/media/background.webp": "/static/media/background.388aee3ebbeebd3f3494.webp",
+    "static/media/logo.png": "/static/media/logo.9b46b284ebb804839c93.png",
+    "static/media/refined_image2.jpg": "/static/media/refined_image2.f06cab3c7acf78fb60b5.jpg",
+    "static/media/steak.webp": "/static/media/steak.731925b86e4e08c1efd0.webp",
+    "static/media/boulettes_de_viande.webp": "/static/media/boulettes_de_viande.352e59acdb11f825a4a0.webp",
+    "static/media/emincé_de_poulet.webp": "/static/media/emincé_de_poulet.63b7ae0fa9b1b0f638fb.webp",
+    "static/media/sauté.webp": "/static/media/sauté.b71b89892cfbff38669c.webp",
+    "index.html": "/index.html",
+    "main.698a38c2.css.map": "/static/css/main.698a38c2.css.map",
+    "main.52c04c0a.js.map": "/static/js/main.52c04c0a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.698a38c2.css",
+    "static/js/main.52c04c0a.js"
+  ]
+}
