@@ -5,15 +5,14 @@ import styled from "styled-components";
 import "./style/App.css";
 import OurStory from "./components/OurStory";
 import Contact from "./components/Contact";
-import { motion } from "framer-motion";
 import { useEffect } from "react";
 
 function App() {
-  const Pstyle = styled(motion.p)`
+  const Pstyle = styled.p`
     padding: 0;
     margin: 0;
   `;
-  const Hstyle = styled(motion.h1)`
+  const Hstyle = styled.h1`
     color: #f3d382;
     font-size: 3em;
     letter-spacing: 2px;
@@ -24,7 +23,7 @@ function App() {
       font-size: 2.3em;
     }
   `;
-  const DefStyle = styled(motion.p)`
+  const DefStyle = styled.p`
     font-family: "Open Sans";
     width: 67%;
     margin-bottom: 30px;
