@@ -1,0 +1,44 @@
+
+body {
+  margin: 0;
+  font-family: 'Playfair Display',sans-serif;
+  background-color: #1e1e1e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+*{
+  color: white;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+html{
+  scroll-behavior: smooth;
+}
+
+
+.hiddenScale {
+  opacity: 0 !important;
+  transform: scale(0.7) !important;
+  transition: opacity 1.2s ease, transform 1.2s ease !important;
+}
+
+@keyframes showScaleAnimation {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.showScaleAnimation {
+  animation: showScaleAnimation 1s ease-out forwards !important;
+}
