@@ -283,8 +283,6 @@ const MenuPage = () => {
   const [dishes, setDishes] = useState([]);
   const [imgs, setImgs] = useState([]);
   const [elementToShow, setElementToShow] = useState("garnitures");
-  const elements = ["meat", "garnitures"];
-
 
   useEffect(() => {
     fetch("/photos.json")
@@ -306,6 +304,8 @@ const MenuPage = () => {
   }, []);
 
   useEffect(() => {
+    const elements = ["meat", "garnitures"];
+
     const interval = setInterval(() => {
       setElementToShow((prev) => {
         const currentIndex = elements.indexOf(prev);
