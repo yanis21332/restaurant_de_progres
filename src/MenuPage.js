@@ -403,7 +403,7 @@ const MenuPage = () => {
         <div className="containerOfContainerMDR">
           <div className="topPart">
             <div className="title">
-              <h1>LES SAVEURS</h1>
+              <h1>LES PLATS</h1>
               <h1>
                 DU <img alt="leaf" src={leaf} />{" "}
                 <span style={{ color: "white", marginLeft: "8vh" }}>JOUR</span>
