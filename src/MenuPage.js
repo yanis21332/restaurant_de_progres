@@ -4,7 +4,6 @@ import darkBackground from "./import/dark_background.jpg";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import audio from "./import/music.mp3";
-import Escalope from "./components/Escalope";
 
 const PStyle = styled.div`
   background-image: url("${(p) => p.darkBackground}");
@@ -51,13 +50,41 @@ const PStyle = styled.div`
     z-index: 2;
     position: relative;
 
+    @keyframes unshowing {
+      0% {
+        opacity: 1;
+        transform: translateX(-50%);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-40%);
+      }
+    }
+    @keyframes showing {
+      0% {
+        opacity: 0;
+        transform: translateX(-60%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(-50%);
+      }
+    }
+    .unshow {
+      transition: 0.2s;
+      animation: unshowing 1s forwards;
+    }
+    .show {
+      transition: 0.2s;
+      animation: showing 1s forwards;
+    }
+
     .entresEtDesserts {
       display: flex;
-      flex: 2;
       flex-direction: column;
-      position: relative;
-      margin-left: 102px;
+      width: 40%;
       justify-content: space-between;
+      padding-bottom: 30px;
 
       .oneDish h3 {
         margin: 0;
@@ -71,15 +98,28 @@ const PStyle = styled.div`
     }
 
     .meat {
-      flex: 4;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      padding-bottom: 20px !important;
+
+      width: 97% !important;
       .mDishes {
-        grid-template-columns: repeat(5, 1fr);
+        .oneDish {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 50px;
+        }
       }
     }
-    .garnitures {
-      position: relative;
-      left: 50px;
-      flex: 2;
+    .garnAndEntrAndDessContainer {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 100%;
+      display: flex;
+      gap: 100px;
       .gDishes {
         grid-template-columns: repeat(2, 0fr);
         width: max-content !important;
@@ -90,27 +130,31 @@ const PStyle = styled.div`
     .garnitures {
       .mDishes,
       .gDishes {
-        width: 100%;
-        display: grid;
-        grid-template-rows: repeat(2, 1fr);
-        grid-column-gap: 20px;
-        grid-row-gap: 0px;
+        width: 100% !important;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px 63px;
+
+        .oneDish {
+          border: 1px solid white;
+          border-radius: 32px;
+          padding: 0px 34px;
+          background: #00851d1f;
+          box-shadow: 0 4px 12px rgb(255 255 255 / 9%);
+        }
       }
     }
 
     .meat,
-    .garnitures,
-    .entres,
-    .desserts {
-      display: inline-block;
-      width: 200px;
+    .garnAndEntrAndDessContainer {
+      width: 97%;
       background: #0a1212cc;
       padding: 0px 16px;
       border-radius: 20px;
       box-shadow: 0 4px 12px rgb(255 255 255 / 9%);
       .oneDish {
         h3 {
-          font-size: 24px;
+          font-size: 30px;
           letter-spacing: 5px;
           opacity: 0.95;
         }
@@ -118,7 +162,7 @@ const PStyle = styled.div`
           color: #feb300;
           font-weight: bold;
           letter-spacing: 1px;
-          font-size: 20px;
+          font-size: 25px;
         }
       }
     }
@@ -127,7 +171,8 @@ const PStyle = styled.div`
       h3 {
         color: #feb300;
         font-weight: bold;
-        font-size: 26px;
+        font-size: 36px;
+        letter-spacing: 3px;
       }
     }
   }
@@ -167,9 +212,9 @@ const PStyle = styled.div`
       align-items: center;
       gap: 30px;
       .bImage {
-        background-size: contain;
+        background-size: cover;
+        background-position: center;
         background-repeat: no-repeat;
-        background-position: center center;
         border-radius: 50%;
 
         animation-name: rotate;
@@ -182,7 +227,7 @@ const PStyle = styled.div`
         }
       }
       .bImageOne {
-        background-image: url("${(p) => p.foodOne}");
+        background-image: url("/photos/${(p) => p.foodOne}");
         background-size: cover;
         background-position: center center;
         width: 190px;
@@ -191,7 +236,7 @@ const PStyle = styled.div`
         animation-duration: 10s;
       }
       .bImageTwo {
-        background-image: url("${(p) => p.foodTwo}");
+        background-image: url("/photos/${(p) => p.foodTwo}");
         background-size: cover;
         background-position: center center;
         width: 240px;
@@ -204,7 +249,7 @@ const PStyle = styled.div`
       .bImageThree {
         width: 310px;
         height: 310px;
-        background-image: url(${p=>p.foodThree});
+        background-image: url("/photos/${(p) => p.foodThree}");
         background-size: cover;
         background-position: center center;
         position: relative;
@@ -215,24 +260,61 @@ const PStyle = styled.div`
     }
   }
   .bottomPart {
+    position: absolute;
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    h1 {
+      color: rgb(252, 233, 189);
+      font-weight: bold;
+      letter-spacing: 3px;
+      font-size: 72px;
+      margin: 0;
+      margin-bottom: 5px;
+      border-radius: 15px;
+    }
   }
 `;
 
 const MenuPage = () => {
   const [dishes, setDishes] = useState([]);
   const [imgs, setImgs] = useState([]);
+  const [elementToShow, setElementToShow] = useState("garnitures");
+  const elements = ["meat", "garnitures"];
+
+
+  useEffect(() => {
+    fetch("/photos.json")
+      .then((res) => res.json())
+      .then((images) => {
+        setImgs(images);
+      });
+  }, []);
 
   useEffect(() => {
     axios
       .get("https://menu-resto-back.onrender.com/api")
       .then((res) => {
         setDishes(res.data);
-        const images = res.data.map((d) => d.image);
-        setImgs(images);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElementToShow((prev) => {
+        const currentIndex = elements.indexOf(prev);
+        const nextIndex =
+          currentIndex + 1 === elements.length ? 0 : currentIndex + 1;
+        return elements[nextIndex];
+      });
+    }, 15000);
+
+    return () => clearInterval(interval); // Nettoyage à la destruction
   }, []);
 
   const getUniqueRandomImage = (usedImages) => {
@@ -247,7 +329,7 @@ const MenuPage = () => {
       const randomImage = getUniqueRandomImage(used);
       circle.style.backgroundImage = "white";
       setTimeout(() => {
-        circle.style.backgroundImage = `url(${randomImage})`;
+        circle.style.backgroundImage = `url(/photos/${randomImage})`;
         if (used.length < 4) {
           used.push(randomImage);
         } else {
@@ -261,13 +343,13 @@ const MenuPage = () => {
 
   setInterval(() => {
     changeImage(circles[0], 1);
-  }, 180000);
+  }, 150000);
   setInterval(() => {
     changeImage(circles[1], 2);
-  }, 520000);
+  }, 380000);
   setInterval(() => {
     changeImage(circles[2], 3);
-  }, 890000);
+  }, 643000);
 
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -318,7 +400,6 @@ const MenuPage = () => {
         className="prinicpaleContainer"
       >
         <div className="overlay"></div>
-        <Escalope />
         <div className="containerOfContainerMDR">
           <div className="topPart">
             <div className="title">
@@ -341,7 +422,9 @@ const MenuPage = () => {
             </div>
           </div>
           <div className="middlePart">
-            <div className="meat">
+            <div
+              className={`meat ${elementToShow === "meat" ? "show" : "unshow"}`}
+            >
               <div className="mTitle disheTitle">
                 <h3>Viandes</h3>
               </div>
@@ -360,32 +443,18 @@ const MenuPage = () => {
                 })}
               </div>
             </div>
-            <div className="garnitures">
-              <div className="gTitle disheTitle">
-                <h3>Garnitures</h3>
-              </div>
-              <div className="gDishes">
-                {dishes.map((dishe, i) => {
-                  if (dishe.type === "Garniture") {
-                    return (
-                      <div key={i} className="oneDish">
-                        <h3>{dishe.name}</h3>
-                      </div>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
-              </div>
-            </div>
-            <div className="entresEtDesserts">
-              <div className="entres">
-                <div className="eTitle disheTitle">
-                  <h3>Entrées (250DA)</h3>
+            <div
+              className={`garnAndEntrAndDessContainer ${
+                elementToShow === "garnitures" ? "show" : "unshow"
+              }`}
+            >
+              <div className={`garnitures`}>
+                <div className="gTitle disheTitle">
+                  <h3>Garnitures</h3>
                 </div>
-                <div className="eDishes">
+                <div className="gDishes">
                   {dishes.map((dishe, i) => {
-                    if (dishe.type === "Entré") {
+                    if (dishe.type === "Garniture") {
                       return (
                         <div key={i} className="oneDish">
                           <h3>{dishe.name}</h3>
@@ -397,25 +466,50 @@ const MenuPage = () => {
                   })}
                 </div>
               </div>
-              <div className="desserts">
-                <div className="dTitle disheTitle">
-                  <h3>Desserts (200DA)</h3>
+              <div className={`entresEtDesserts`}>
+                <div className="entres">
+                  <div className="eTitle disheTitle">
+                    <h3>Entrées (250DA)</h3>
+                  </div>
+                  <div className="eDishes">
+                    {dishes.map((dishe, i) => {
+                      if (dishe.type === "Entré") {
+                        return (
+                          <div key={i} className="oneDish">
+                            <h3>{dishe.name}</h3>
+                          </div>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </div>
                 </div>
-                <div className="dDishes">
-                  {dishes.map((dishe, i) => {
-                    if (dishe.type === "Dessert") {
-                      return (
-                        <div key={i} className="oneDish">
-                          <h3>{dishe.name}</h3>
-                        </div>
-                      );
-                    } else {
-                      return null;
-                    }
-                  })}
+                <div className="desserts">
+                  <div className="dTitle disheTitle">
+                    <h3>Desserts (200DA)</h3>
+                  </div>
+                  <div className="dDishes">
+                    {dishes.map((dishe, i) => {
+                      if (dishe.type === "Dessert") {
+                        return (
+                          <div key={i} className="oneDish">
+                            <h3>{dishe.name}</h3>
+                          </div>
+                        );
+                      } else {
+                        return null;
+                      }
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="bottomPart">
+            <h1 className="niceQuote">
+              Le restaurant du progrès vous souhaite la bienvenue.
+            </h1>
           </div>
         </div>
       </PStyle>

@@ -42,7 +42,7 @@
   }
 }
 .niceQuote {
-  font-family: Dancing script,sans-serif;
+  font-family: Dancing script,sans-serif !important;
   opacity: 0.9;
   font-size: 1.9em;
 }
