@@ -266,6 +266,7 @@ const PStyle = styled.div`
     display: flex;
     justify-content: center;
     bottom: 0;
+    left: 0;
     h1 {
       color: rgb(252, 233, 189);
       font-weight: bold;
