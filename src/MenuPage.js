@@ -21,15 +21,6 @@ const PStyle = styled.div`
     font-family: Open sans;
   }
 
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   .containerOfContainerMDR {
     width: 100%;
     max-width: 1920px;
@@ -109,7 +100,10 @@ const PStyle = styled.div`
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 50px;
+
+          h3 {
+            margin-right: 30px;
+          }
         }
       }
     }
@@ -133,10 +127,11 @@ const PStyle = styled.div`
         width: 100% !important;
         display: flex;
         flex-wrap: wrap;
-        gap: 20px 63px;
 
         .oneDish {
           border: 1px solid white;
+          margin-right: 63px;
+          margin-bottom: 20px;
           border-radius: 32px;
           padding: 0px 34px;
           background: #00851d1f;
@@ -154,7 +149,7 @@ const PStyle = styled.div`
       box-shadow: 0 4px 12px rgb(255 255 255 / 9%);
       .oneDish {
         h3 {
-          font-size: 30px;
+          font-size: 33px;
           letter-spacing: 5px;
           opacity: 0.95;
         }
@@ -210,52 +205,50 @@ const PStyle = styled.div`
     .bigBImage {
       display: flex;
       align-items: center;
-      gap: 30px;
       .bImage {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        border-radius: 50%;
-
-        animation-name: rotate;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
+        border-radius: 50px;
+        position: relative;
+        overflow: hidden;
         transition: 1s ease-in-out;
+        margin-right: 50px;
 
         &:hover {
           cursor: pointer;
         }
+
+        .fade-image {
+          opacity: 1;
+          transition: opacity 0.5s ease-in-out;
+        }
+
+        .fade-out {
+          opacity: 0;
+        }
+        img {
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          transition: 0.3s;
+        }
       }
       .bImageOne {
-        background-image: url("/photos/${(p) => p.foodOne}");
-        background-size: cover;
-        background-position: center center;
         width: 190px;
         border: 4px solid #feb300;
         height: 190px;
-        animation-duration: 10s;
       }
       .bImageTwo {
-        background-image: url("/photos/${(p) => p.foodTwo}");
-        background-size: cover;
-        background-position: center center;
         width: 240px;
         height: 240px;
-        right: 580px;
-        animation-duration: 28s;
 
         border: 8px solid #feb300;
       }
       .bImageThree {
         width: 310px;
         height: 310px;
-        background-image: url("/photos/${(p) => p.foodThree}");
-        background-size: cover;
-        background-position: center center;
         position: relative;
         border: 15px solid white;
-
-        animation-duration: 40s;
       }
     }
   }
@@ -284,11 +277,30 @@ const MenuPage = () => {
   const [imgs, setImgs] = useState([]);
   const [elementToShow, setElementToShow] = useState("garnitures");
 
+  const [groupOne, setGroupOne] = useState([]);
+  const [groupTwo, setGroupTwo] = useState([]);
+  const [groupThree, setGroupThree] = useState([]);
+
+  const [fadeOne, setFadeOne] = useState(false);
+  const [fadeTwo, setFadeTwo] = useState(false);
+  const [fadeThree, setFadeThree] = useState(false);
+
   useEffect(() => {
     fetch("/photos.json")
       .then((res) => res.json())
       .then((images) => {
         setImgs(images);
+        setGroupOne(
+          images.group_one[Math.floor(Math.random() * images.group_one.length)]
+        );
+        setGroupTwo(
+          images.group_two[Math.floor(Math.random() * images.group_two.length)]
+        );
+        setGroupThree(
+          images.group_three[
+            Math.floor(Math.random() * images.group_three.length)
+          ]
+        );
       });
   }, []);
 
@@ -316,41 +328,57 @@ const MenuPage = () => {
     }, 15000);
 
     return () => clearInterval(interval); // Nettoyage à la destruction
-  }, []);
-
-  const getUniqueRandomImage = (usedImages) => {
-    let available = imgs.filter((img) => !usedImages.includes(img));
-
-    const randomIndex = Math.floor(Math.random() * available.length);
-    return available[randomIndex];
-  };
-  const changeImage = (circle, circlePos) => {
-    if (circle !== undefined) {
-      const used = [];
-      const randomImage = getUniqueRandomImage(used);
-      circle.style.backgroundImage = "white";
+  }, [elementToShow]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFadeOne(true);
       setTimeout(() => {
-        circle.style.backgroundImage = `url(/photos/${randomImage})`;
-        if (used.length < 4) {
-          used.push(randomImage);
-        } else {
-          used[circlePos] = randomImage;
-        }
-      }, 7000);
-    }
-  };
+        setGroupOne((prev) => {
+          const currentIndex = imgs.group_one.indexOf(prev);
+          const nextIndex =
+            currentIndex + 1 === imgs.group_one.length ? 0 : currentIndex + 1;
+          return imgs.group_one[nextIndex];
+        });
+      }, 400);
+      setTimeout(() => {
+        setFadeOne(false);
+      }, 550);
+    }, 60000);
+    const intervalTwo = setInterval(() => {
+      setFadeTwo(true);
+      setTimeout(() => {
+        setGroupTwo((prev) => {
+          const currentIndex = imgs.group_two.indexOf(prev);
+          const nextIndex =
+            currentIndex + 1 === imgs.group_two.length ? 0 : currentIndex + 1;
+          return imgs.group_two[nextIndex];
+        });
+      }, 400);
+      setTimeout(() => {
+        setFadeTwo(false);
+      }, 550);
+    }, 120000);
+    const intervalThree = setInterval(() => {
+      setFadeThree(true);
+      setTimeout(() => {
+        setGroupThree((prev) => {
+          const currentIndex = imgs.group_three.indexOf(prev);
+          const nextIndex =
+            currentIndex + 1 === imgs.group_three.length ? 0 : currentIndex + 1;
+          return imgs.group_three[nextIndex];
+        });
+      }, 400);
+      setTimeout(() => {
+        setFadeThree(false);
+      }, 550);
+    }, 180000);
 
-  const circles = document.querySelectorAll(".bImage");
-
-  setInterval(() => {
-    changeImage(circles[0], 1);
-  }, 150000);
-  setInterval(() => {
-    changeImage(circles[1], 2);
-  }, 380000);
-  setInterval(() => {
-    changeImage(circles[2], 3);
-  }, 643000);
+    return () => {
+      clearInterval(interval);
+      clearInterval(intervalTwo);
+      clearInterval(intervalThree);
+    }; // Nettoyage à la destruction
+  }, [imgs]);
 
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -393,13 +421,7 @@ const MenuPage = () => {
           Activer la musique 🎵
         </button>
       )}
-      <PStyle
-        darkBackground={darkBackground}
-        foodOne={imgs[Math.floor(Math.random() * imgs.length)]}
-        foodTwo={imgs[Math.floor(Math.random() * imgs.length)]}
-        foodThree={imgs[Math.floor(Math.random() * imgs.length)]}
-        className="prinicpaleContainer"
-      >
+      <PStyle darkBackground={darkBackground} className="prinicpaleContainer">
         <div className="overlay"></div>
         <div className="containerOfContainerMDR">
           <div className="topPart">
@@ -411,15 +433,27 @@ const MenuPage = () => {
               </h1>
             </div>
             <div className="bigBImage">
-              <div onClick={playMusic} className="bImage bImageOne"></div>
-              <div
-                onClick={() => playMusic()}
-                className="bImage bImageTwo"
-              ></div>
-              <div
-                onClick={() => playMusic()}
-                className="bImage bImageThree"
-              ></div>
+              <div onClick={playMusic} className="bImage bImageOne">
+                <img
+                  className={`fade-image ${fadeOne ? "fade-out" : ""}`}
+                  alt="resto"
+                  src={`/photos/${groupOne}`}
+                />
+              </div>
+              <div onClick={() => playMusic()} className="bImage bImageTwo">
+                <img
+                  className={`fade-image ${fadeTwo ? "fade-out" : ""}`}
+                  alt="resto"
+                  src={`/photos/${groupTwo}`}
+                />
+              </div>
+              <div onClick={() => playMusic()} className="bImage bImageThree">
+                <img
+                  className={`fade-image ${fadeThree ? "fade-out" : ""}`}
+                  alt="resto"
+                  src={`/photos/${groupThree}`}
+                />
+              </div>
             </div>
           </div>
           <div className="middlePart">
