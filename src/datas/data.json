@@ -1,0 +1,17 @@
+{
+  "specialites_1": [
+    { "plat": "roti", "prix": 900,"text":"Découvrez nos rotis, préparés avec une viande de qualité, tendrement cuite et parfaitement assaisonnée. Chaque bouchée est un véritable délice, mariant saveurs riches et textures fondantes. Accompagnés de garnitures maison, nos rotis vous offrent une expérience gustative inoubliable." },
+    { "plat": "sauté", "prix": 900, "text":"Les sautés de notre menu sont un mélange parfait de viandes et légumes frais, rapidement cuits à haute température pour préserver toute leur fraîcheur. Légèrement épicés et riches en saveurs, nos sautés apportent une touche de convivialité à votre repas. Un plat idéal pour les amateurs de cuisine savoureuse et rapide." },
+    { "plat": "entre cotes", "prix": 900,"text":"Nos entrecôtes, issues des meilleures viandes, sont grillées à la perfection pour un goût intense et savoureux. Avec une croûte délicatement dorée et un cœur tendre, elles séduiront les amateurs de viande. Savourez-les avec nos sauces maison, pour un repas d'exception." }
+  ],
+  "specialites_2": [
+    {"plat":"couscous","prix":300, "text":"Un couscous parfumé, garni de légumes colorés, de pois chiches et de viande tendre, pour un voyage culinaire au cœur des traditions."},
+    {"plat":"steak","prix":800, "text":"Savourez un steak parfaitement saisi, accompagné de frites dorées et d'haricots verts croquants, sublimé par une touche de sauce raffinée."},
+    {"plat":"emincé de poulet","prix":600, "text":"Découvrez la tendreté du poulet émincé, harmonieusement marié à un mélange de riz délicat et de fenouil fondant, relevé par des herbes fraîches."}
+  ],
+  "specialites_3": [
+    {"plat":"cordons bleus","prix":500, "text":"Régalez-vous avec des cordons bleus dorés, servis avec une salade croquante et une sauce onctueuse pour une touche gourmande."},
+    {"plat":"boulettes de viande","prix":300, "text":"Des boulettes juteuses mijotées dans une sauce tomate riche et savoureuse, parfaites pour une explosion de saveurs."},
+    {"plat":"croquettes de chou fleur","prix":300, "text":"Des croquettes dorées et croustillantes au chou-fleur, accompagnées d'une sauce crémeuse et relevées d'herbes fraîches."}
+  ]
+}
