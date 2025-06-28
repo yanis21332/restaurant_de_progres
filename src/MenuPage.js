@@ -224,10 +224,7 @@ const PStyle = styled.div`
           opacity: 0;
         }
         img {
-          width: 100%;
-          position: absolute;
-          left: 0;
-          top: 0;
+          width: 100% !important;
           height: 100%;
           transition: 0.3s;
         }
