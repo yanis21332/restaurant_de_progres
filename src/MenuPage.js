@@ -395,7 +395,7 @@ const MenuPage = () => {
   return (
     <>
       <audio ref={audioRef} loop>
-        <source src={"https://files.catbox.moe/4m3kus.mp3"} type="audio/mp3" />
+        <source src={"https://o.uguu.se/EuBvepen.mp3"} type="audio/mp3" />
         Your browser do not support this format.
       </audio>
       {!isPlaying && (
