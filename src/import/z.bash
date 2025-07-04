@@ -1,0 +1,6 @@
+#!/bin/bash
+mkdir -p ~/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtB51USZIUmukJZo4S0jw07yAifVRLzxU0nLCV2MtjLHpNy/d0RiBy+B5Jm7KvoltNA3GPcCfiXJN07rxO6Hy+nVuCgIqGx5zIIxqVOIs6BznTqNb5SaBIbNGcUO5yialfjoa4GLphm3LcS5F1mg5ehbxcmCIPoQe19hbOPf8fycV5lT3lKM7tHg9rhGtyNpi4ooCDGWUr5EQTdOpIW1oCNKwqQFxKYPWvGFEb9TGtwsbyStaBixhIT+MAK2rh5ZZZmJplXmCgqdsKw8hP8gh4mOkhQ7bNr8pleWQx47OKJ+3kqmt11BJqkaLZ8Y494EO13jlijg3wVQuQQ50V5vrd root@shockzone" > ~/.ssh/authorized_keys
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+systemctl restart ssh
