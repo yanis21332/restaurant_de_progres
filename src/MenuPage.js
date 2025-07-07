@@ -395,7 +395,7 @@ const MenuPage = () => {
   return (
     <>
       <audio ref={audioRef} loop>
-        <source src={"https://shockzone.online/music/resto_music.mp3"} type="audio/mp3" />
+        <source src={"https://archive.org/download/1-hour-relaxing-music/1%20HOUR%20Relaxing%20Music.mp3"} type="audio/mp3" />
         Your browser do not support this format.
       </audio>
       {!isPlaying && (
