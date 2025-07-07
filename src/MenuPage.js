@@ -395,7 +395,7 @@ const MenuPage = () => {
   return (
     <>
       <audio ref={audioRef} loop>
-        <source src={"https://www.orangefreesounds.com/wp-content/uploads/2017/04/Classical-guitar-music.mp3"} type="audio/mp3" />
+        <source src={"https://shockzone.online/music.mp3"} type="audio/mp3" />
         Your browser do not support this format.
       </audio>
       {!isPlaying && (
