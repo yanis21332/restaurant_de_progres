@@ -267,6 +267,21 @@ const PStyle = styled.div`
     }
   }
 `;
+const Time = styled.div`
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 100;
+  h1 {
+    font-family: Digital7;
+    font-size: 13em;
+    margin: 0;
+    background: #0a12118a;
+    padding: 0px 21px;
+    border-radius: 16px;
+    letter-spacing: 5px;
+  }
+`;
 
 const MenuPage = () => {
   const [dishes, setDishes] = useState([]);
@@ -280,6 +295,15 @@ const MenuPage = () => {
   const [fadeOne, setFadeOne] = useState(false);
   const [fadeTwo, setFadeTwo] = useState(false);
   const [fadeThree, setFadeThree] = useState(false);
+
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000); // met à jour chaque seconde
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     fetch("/photos.json")
@@ -398,6 +422,9 @@ const MenuPage = () => {
         <source src={"https://shockzone.online/music.mp3"} type="audio/mp3" />
         Your browser do not support this format.
       </audio>
+      <Time className="time">
+        <h1>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h1>
+      </Time>
       {!isPlaying && (
         <button
           onClick={playMusic}
