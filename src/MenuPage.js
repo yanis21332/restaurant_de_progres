@@ -214,37 +214,24 @@ const PStyle = styled.div`
         &:hover {
           cursor: pointer;
         }
-
-        .fade-image {
-          opacity: 1;
-          transition: opacity 0.5s ease-in-out;
-        }
-
-        .fade-out {
-          opacity: 0;
-        }
-        img {
-          width: 100% !important;
-          height: 100%;
-          transition: 0.3s;
-        }
-      }
-      .bImageOne {
-        width: 190px;
-        border: 4px solid #feb300;
-        height: 190px;
-      }
-      .bImageTwo {
-        width: 240px;
-        height: 240px;
-
-        border: 8px solid #feb300;
       }
       .bImageThree {
         width: 310px;
         height: 310px;
         position: relative;
         border: 15px solid white;
+
+        .imgsContainer {
+          display: flex;
+          width: 100%;
+          height: 100%;
+          transition: 0.2s;
+
+          img {
+            width: 310px;
+            height: 310px;
+          }
+        }
       }
     }
   }
@@ -268,10 +255,11 @@ const PStyle = styled.div`
   }
 `;
 const Time = styled.div`
-  position: fixed;
-  left: 20px;
-  top: 20px;
   z-index: 100;
+  display: flex;
+  align-items: end;
+  position: relative;
+  bottom: 12px;
   h1 {
     font-family: Digital7;
     font-size: 13em;
@@ -285,16 +273,8 @@ const Time = styled.div`
 
 const MenuPage = () => {
   const [dishes, setDishes] = useState([]);
-  const [imgs, setImgs] = useState([]);
   const [elementToShow, setElementToShow] = useState("garnitures");
-
-  const [groupOne, setGroupOne] = useState([]);
-  const [groupTwo, setGroupTwo] = useState([]);
-  const [groupThree, setGroupThree] = useState([]);
-
-  const [fadeOne, setFadeOne] = useState(false);
-  const [fadeTwo, setFadeTwo] = useState(false);
-  const [fadeThree, setFadeThree] = useState(false);
+  const [imgs, setImgs] = useState([]);
 
   const [time, setTime] = useState(new Date());
 
@@ -309,19 +289,44 @@ const MenuPage = () => {
     fetch("/photos.json")
       .then((res) => res.json())
       .then((images) => {
-        setImgs(images);
-        setGroupOne(
-          images.group_one[Math.floor(Math.random() * images.group_one.length)]
-        );
-        setGroupTwo(
-          images.group_two[Math.floor(Math.random() * images.group_two.length)]
-        );
-        setGroupThree(
-          images.group_three[
-            Math.floor(Math.random() * images.group_three.length)
-          ]
-        );
+        const a = images.group_one;
+        const b = images.group_two;
+        const c = images.group_three;
+        setImgs(a, b, c);
       });
+  }, []);
+
+  useEffect(() => {
+    const container = document.querySelector(".bImageThree");
+    if (!container) return;
+    const interval = setInterval(() => {
+      const ani = container.querySelector(".imgsContainer");
+      if (!ani) return;
+
+      // 1. Lance l’animation
+      ani.style.transition = "transform 0.4s ease-in-out";
+      ani.style.transform = "translateX(-310px)";
+
+      // 2. Quand l’animation est finie → reset
+      const handleTransitionEnd = () => {
+        setImgs((prev) => {
+          if (prev.length === 0) return prev; // sécurité
+
+          const [first, ...rest] = prev; // déstructuration
+          return [...rest, first];
+        });
+
+        // réinsérer dans le DOM
+
+        ani.style.transition = "none"; // reset de la transition pour pas voir le saut
+        ani.style.transform = "translateX(0)";
+        ani.removeEventListener("transitionend", handleTransitionEnd);
+      };
+
+      ani.addEventListener("transitionend", handleTransitionEnd);
+    }, 20000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -349,56 +354,6 @@ const MenuPage = () => {
 
     return () => clearInterval(interval); // Nettoyage à la destruction
   }, [elementToShow]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFadeOne(true);
-      setTimeout(() => {
-        setGroupOne((prev) => {
-          const currentIndex = imgs.group_one.indexOf(prev);
-          const nextIndex =
-            currentIndex + 1 === imgs.group_one.length ? 0 : currentIndex + 1;
-          return imgs.group_one[nextIndex];
-        });
-      }, 400);
-      setTimeout(() => {
-        setFadeOne(false);
-      }, 550);
-    }, 60000);
-    const intervalTwo = setInterval(() => {
-      setFadeTwo(true);
-      setTimeout(() => {
-        setGroupTwo((prev) => {
-          const currentIndex = imgs.group_two.indexOf(prev);
-          const nextIndex =
-            currentIndex + 1 === imgs.group_two.length ? 0 : currentIndex + 1;
-          return imgs.group_two[nextIndex];
-        });
-      }, 400);
-      setTimeout(() => {
-        setFadeTwo(false);
-      }, 550);
-    }, 120000);
-    const intervalThree = setInterval(() => {
-      setFadeThree(true);
-      setTimeout(() => {
-        setGroupThree((prev) => {
-          const currentIndex = imgs.group_three.indexOf(prev);
-          const nextIndex =
-            currentIndex + 1 === imgs.group_three.length ? 0 : currentIndex + 1;
-          return imgs.group_three[nextIndex];
-        });
-      }, 400);
-      setTimeout(() => {
-        setFadeThree(false);
-      }, 550);
-    }, 180000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(intervalTwo);
-      clearInterval(intervalThree);
-    }; // Nettoyage à la destruction
-  }, [imgs]);
 
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -422,9 +377,7 @@ const MenuPage = () => {
         <source src={"https://shockzone.online/music.mp3"} type="audio/mp3" />
         Your browser do not support this format.
       </audio>
-      <Time className="time">
-        <h1>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h1>
-      </Time>
+
       {!isPlaying && (
         <button
           onClick={playMusic}
@@ -456,27 +409,35 @@ const MenuPage = () => {
                 <span style={{ color: "white", marginLeft: "8vh" }}>JOUR</span>
               </h1>
             </div>
+            <Time className="time">
+              <h1>
+                {time.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </h1>
+            </Time>
             <div className="bigBImage">
-              <div onClick={playMusic} className="bImage bImageOne">
-                <img
-                  className={`fade-image ${fadeOne ? "fade-out" : ""}`}
-                  alt="resto"
-                  src={`/photos/${groupOne}`}
-                />
-              </div>
-              <div onClick={() => playMusic()} className="bImage bImageTwo">
-                <img
-                  className={`fade-image ${fadeTwo ? "fade-out" : ""}`}
-                  alt="resto"
-                  src={`/photos/${groupTwo}`}
-                />
-              </div>
               <div onClick={() => playMusic()} className="bImage bImageThree">
-                <img
-                  className={`fade-image ${fadeThree ? "fade-out" : ""}`}
-                  alt="resto"
-                  src={`/photos/${groupThree}`}
-                />
+                <div className="imgsContainer">
+                  {imgs.map((img, i) => {
+                    return (
+                      <span
+                        key={i}
+                        className={`fade-image`}
+                        alt="resto"
+                        style={{
+                          backgroundImage: `url(/photos/${img})`,
+                          backgroundPosition: "center",
+                          backgroundSize: "cover",
+                          width: "310px",
+                          height: "310px",
+                          flexShrink: 0,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
