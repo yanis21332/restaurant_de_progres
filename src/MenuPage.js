@@ -528,7 +528,7 @@ const MenuPage = () => {
           </div>
           <div className="bottomPart">
             <h1 className="niceQuote">
-              Le restaurant du progrès vous souhaite la bienvenue.
+              Nous vous souhaitons un délicieux moment et un appétit comblé.
             </h1>
           </div>
         </div>
