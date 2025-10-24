@@ -501,7 +501,7 @@ const MenuPage = () => {
               <div className={`entresEtDesserts`}>
                 <div className="entres">
                   <div className="eTitle disheTitle">
-                    <h3>Entrées (250DA)</h3>
+                    <h3>Entrées</h3>
                   </div>
                   <div className="eDishes">
                     {dishes.map((dishe, i) => {
