@@ -514,7 +514,7 @@ const MenuPage = () => {
                       if (dishe.type === "Dessert") {
                         return (
                           <div key={i} className="oneDish">
-                            <h3>{dishe.name}</h3>
+                            <h3>{dishe.name} {dishe.name.toLowerCase()==="tiramisu"?"(250DA):"}</h3>
                           </div>
                         );
                       } else {
