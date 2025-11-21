@@ -515,7 +515,7 @@ const MenuPage = () => {
                         return (
                           <div key={i} className="oneDish">
                             <h3>
-                              {dishe.name} {dishe.name=== "Tiramisu"?"(250DA)":dishe.name}
+                              {dishe.name} {dishe.name.includes("Tiramisu") ? "(250DA)" : "izan"}
                             </h3>
                           </div>
                         );
