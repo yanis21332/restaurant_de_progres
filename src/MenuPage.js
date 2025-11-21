@@ -515,7 +515,7 @@ const MenuPage = () => {
                         return (
                           <div key={i} className="oneDish">
                             <h3>
-                              {dishe.name} {i === dishes.length - 1 ? "(250DA)" : `${dishes.length} + ${i}`}
+                              {dishe.name} {dishe.name=== "Tiramisu"?"(250DA)":dishe.name}
                             </h3>
                           </div>
                         );
