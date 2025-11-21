@@ -515,7 +515,7 @@ const MenuPage = () => {
                         return (
                           <div key={i} className="oneDish">
                             <h3>
-                              {dishe.name} {dishe.name.toLowerCase() === "tiramisu" ? "(250DA)" : ""}
+                              {dishe.name} {dishe.name.toLowerCase() === "tiramisu" ? "(250DA)" : "س"}
                             </h3>
                           </div>
                         );
