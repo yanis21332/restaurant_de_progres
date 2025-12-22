@@ -19,6 +19,9 @@ const PStyle = styled.div`
   label {
     font-family: Open sans;
   }
+  .tiramisuSpan{
+    color: #feb300;
+  }
 
   .containerOfContainerMDR {
     width: 100%;
@@ -515,7 +518,7 @@ const MenuPage = () => {
                         return (
                           <div key={i} className="oneDish">
                             <h3>
-                              {dishe.name} {dishe.name.includes("Tiramisu") ? "(250DA)" : ""}
+                              {dishe.name} {dishe.name.includes("Tiramisu") ? <span className="tiramisuSpan">Tiramisu</span> : ""}
                             </h3>
                           </div>
                         );
