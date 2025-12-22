@@ -518,7 +518,7 @@ const MenuPage = () => {
                         return (
                           <div key={i} className="oneDish">
                             <h3>
-                              {dishe.name} {dishe.name.includes("Tiramisu") ? <span className="tiramisuSpan">Tiramisu</span> : ""}
+                              {dishe.name} {dishe.name.includes("Tiramisu") ? <span className="tiramisuSpan">(250DA)</span> : ""}
                             </h3>
                           </div>
                         );
