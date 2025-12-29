@@ -19,7 +19,7 @@ const PStyle = styled.div`
   label {
     font-family: Open sans;
   }
-  .tiramisuSpan{
+  .tiramisuSpan, .orangeSpan{
     color: #feb300;
   }
 
