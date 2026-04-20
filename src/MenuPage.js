@@ -3,6 +3,9 @@ import leaf from "./import/leaf.png";
 import darkBackground from "./import/dark_background.jpg";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { io } from "socket.io-client";
+
+const socket = io("https://menu-resto-back.onrender.com");
 
 const PStyle = styled.div`
   background-image: url("${(p) => p.darkBackground}");
@@ -355,6 +358,45 @@ const MenuPage = () => {
     return () => clearInterval(interval); // Nettoyage à la destruction
   }, [elementToShow]);
 
+  useEffect(() => {
+    socket.on("dish_added", (newDish) => {
+      setDishes((prevDishes) => {
+        return [...prevDishes, newDish];
+      });
+    });
+    socket.on("dish_deleted", (deletedDish) => {
+      setDishes((prevDishes) => {
+        const n = prevDishes.filter((d) => d._id !== deletedDish._id);
+        return n;
+      });
+    });
+    socket.on("dish_updated", (updatedDish) => {
+      setDishes((prevDishes) => {
+        const exists = prevDishes.find((d) => d._id === updatedDish._id);
+
+        if (exists) {
+          if (updatedDish.available === false) {
+            return prevDishes.filter((d) => d._id !== updatedDish._id);
+          }
+          return prevDishes.map((d) =>
+            d._id === updatedDish._id ? updatedDish : d,
+          );
+        }
+
+        if (updatedDish.available) {
+          return [...prevDishes, updatedDish];
+        }
+
+        return prevDishes;
+      });
+    });
+
+    return () => {
+      socket.off("dish_added");
+      socket.off("dish_deleted");
+      socket.off("dish_updated");
+    };
+  }, []);
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -452,7 +494,7 @@ const MenuPage = () => {
                 {dishes.map((dishe, i) => {
                   if (dishe.type === "Viande") {
                     return (
-                      <div key={i} className="oneDish">
+                      <div key={dishe._id} className="oneDish">
                         <h3>{dishe.name}</h3>
                         <p>{dishe.price} DA</p>
                       </div>
@@ -476,7 +518,7 @@ const MenuPage = () => {
                   {dishes.map((dishe, i) => {
                     if (dishe.type === "Garniture") {
                       return (
-                        <div key={i} className="oneDish">
+                        <div key={dishe._id} className="oneDish">
                           <h3>{dishe.name}</h3>
                         </div>
                       );
@@ -495,7 +537,7 @@ const MenuPage = () => {
                     {dishes.map((dishe, i) => {
                       if (dishe.type === "Entré") {
                         return (
-                          <div key={i} className="oneDish">
+                          <div key={dishe._id} className="oneDish">
                             <h3>{dishe.name}</h3>
                           </div>
                         );
@@ -513,7 +555,7 @@ const MenuPage = () => {
                     {dishes.map((dishe, i) => {
                       if (dishe.type === "Dessert") {
                         return (
-                          <div key={i} className="oneDish">
+                          <div key={dishe._id} className="oneDish">
                             <h3>{dishe.name}</h3>
                           </div>
                         );
